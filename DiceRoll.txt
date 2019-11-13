@@ -1,0 +1,14 @@
+import random
+def dicegame():
+  number = random.randint(1,6)
+  print(number)
+  while(1):
+    flag = str(input("Do You want roll the dice?:1 and if not     0"))
+    if flag == '1':
+      number = random.randint(1,6)
+      print(number)
+    else:
+      print("end")
+      return
+
+dicegame()
