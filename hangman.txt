@@ -1,0 +1,55 @@
+import string
+
+
+def find_occurences(s, ch):
+  return [i for i, letter in enumerate(s)if letter == ch]
+
+
+def game(word, max_guess):
+  letter_bank = set(string.ascii_lowercase)
+  word_chars = set(word)
+  if word_chars - letter_bank:
+    print("Words can only contain ascii letters!")
+    return False
+  word_guess = list(" ".join("-" * len(w) for w in word.split()))
+  cur_guess = 0  
+
+  while cur_guess < max_guess:
+    print(''.join(word_guess))
+    if word == ''.join(word_guess):
+      return True
+
+    letter_guess = input("Please enter your guess (%i remaining):" % (max_guess - cur_guess)).lower()
+    if len(letter_guess) != 1:
+      return letter_guess == word
+    elif letter_guess not in letter_bank:
+      print("You have already used that letter or it is not a valid letter!")
+    elif letter_guess in word_chars:
+      print("%s is in the word!" % letter_guess)
+      letter_bank.remove(letter_guess)
+      for each in find_occurences(word, letter_guess):
+        word_guess[each] = letter_guess
+    else:
+      print("%s is not in the word!" % letter_guess)
+      letter_bank.remove(letter_guess)
+      cur_guess += 1
+      print()
+      return False
+
+
+def main():
+  print('Welcome to Hangman! Simplified version of the original Hangman.')
+
+  word = input("Please enter a word: ").lower()
+  max_guess = int(input("Maximum Guess: "))
+
+  print("\n" * 50)
+  print('You are now ready to play.')
+
+  if game(word, max_guess):
+    print('You have successfully guessed the word!')
+  else:
+    print('You have lost the game! :(\nThe word was %s' % word)
+
+if __name__ == "__main__":
+  main()
